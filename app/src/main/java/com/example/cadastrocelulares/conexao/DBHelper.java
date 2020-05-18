@@ -11,6 +11,8 @@ import android.database.sqlite.SQLiteOpenHelper;
 import com.example.cadastrocelulares.modelos.Celular;
 import com.example.cadastrocelulares.modelos.Marca;
 
+import org.w3c.dom.ls.LSOutput;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -19,15 +21,16 @@ import java.util.List;
  */
 public class DBHelper extends SQLiteOpenHelper {
 
+
     private static final int DATABASE_VERSION = 1;
     private static final String DATABASE_NAME = "empresa.db";
 
     //Tabelas
-    private static final String TABLE_NAME_CELULAR = "celular";
+    public static final String TABLE_NAME_CELULAR = "celular";
     private static final String TABLE_NAME_MARCA = "marca";
 
     // TABELA CELULAR
-    private static final String COLUMN_ID_CELULAR = "id";
+    public static final String COLUMN_ID_CELULAR = "id";
     private static final String COLUMN_MARCA_ID = "marca_id";
     private static final String COLUMN_MODELO = "modelo";
 
@@ -37,12 +40,13 @@ public class DBHelper extends SQLiteOpenHelper {
 
     SQLiteDatabase db;
 
+
     // CREATE CELULAR
     private static final String TABLE_CREATE_CELULAR = "create table " + TABLE_NAME_CELULAR + " ("
             + COLUMN_ID_CELULAR + " integer primary key autoincrement, "
             + COLUMN_MARCA_ID + " integer not null, "
             + COLUMN_MODELO + " text not null, "
-            + "FOREIGN KEY ( " + COLUMN_MARCA_ID + " ) REFERENCES " + TABLE_NAME_MARCA + "(" + COLUMN_ID_MARCA + ")";
+            + "FOREIGN KEY ( " + COLUMN_MARCA_ID + " ) REFERENCES " + TABLE_NAME_MARCA + "(" + COLUMN_ID_MARCA + "))";
 
     // CREATE MARCA
     private static final String TABLE_CREATE_MARCA = "create table " + TABLE_NAME_MARCA + " ("
@@ -62,24 +66,36 @@ public class DBHelper extends SQLiteOpenHelper {
     }
 
     // inserir uma marca
-    public void insereMarca(Marca marca) {
+    public String insereMarca(Marca marca) {
+
+
+
         db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
+        long resultado;
 
         values.put(COLUMN_MARCA, marca.getMarca());
-        db.insert(TABLE_NAME_MARCA, null, values);
+        resultado = db.insert(TABLE_NAME_MARCA, null, values);
         db.close();
+
+        if (resultado == -1)
+            return "Erro no cadastro!";
+        else {
+            return "Salvo com sucesso!";
+        }
+
     }
 
     // alterar uma marca
     public void alterarMarca(Marca marca) {
+        long resultado;
         db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
 
         values.put(COLUMN_ID_MARCA, marca.getMarcaId());
         values.put(COLUMN_MARCA, marca.getMarca());
 
-        db.update(TABLE_NAME_MARCA, values, "id = " + marca.getMarca(), null);
+        resultado = db.update(TABLE_NAME_MARCA, values, "id = " + marca.getMarca(), null);
         db.close();
     }
 
@@ -123,16 +139,26 @@ public class DBHelper extends SQLiteOpenHelper {
     }
 
     // inserir celular
-    public void insereCelular(Celular celular) {
+    public String insereCelular(Celular celular) {
         db = this.getWritableDatabase();
+
+
         ContentValues values = new ContentValues();
+        long resultado;
 
         values.put(COLUMN_MARCA_ID, celular.getMarcaId());
         values.put(COLUMN_MODELO, celular.getModelo());
 
-        db.insert(TABLE_NAME_CELULAR, null, values);
+        resultado = db.insert(TABLE_NAME_CELULAR, null, values);
         db.close();
+
+        if (resultado == -1)
+            return "Erro no cadastro!";
+        else {
+            return "Salvo com sucesso!";
+        }
     }
+
 
     // alterar celular
     public void alterarCelular(Celular celular) {

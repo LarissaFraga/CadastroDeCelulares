@@ -22,7 +22,7 @@
             android:textSize="18sp" />
 
         <Spinner
-            android:id="@+id/spinner"
+            android:id="@+id/spinner_cel"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="48dp"/>
@@ -43,7 +43,7 @@
             android:ems="7" />
 
         <Button
-            android:id="@+id/btnCadastrarMarca"
+            android:id="@+id/btnCadastrarCelular"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="48dp"
